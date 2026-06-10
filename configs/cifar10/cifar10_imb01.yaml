@@ -1,0 +1,54 @@
+# ===== General settings =====
+dataset: cifar10
+data_path: ''
+num_classes: 10
+arch: resnet32
+loss_type: LA              # LDAM, VS, LA, CE
+imb_type: exp
+imb_factor: 0.1
+train_rule: 'None'         # None, DRW, Reweight
+train_sampler: 'None'
+workers: 8
+epochs: 200
+start_epoch: 0
+batch_size: 64
+lr: 0.1
+momentum: 0.9
+weight_decay: 2e-4
+print_freq: 10
+resume: ''
+evaluate: False
+pretrained: False
+seed: 0
+gpu: 0
+
+# ===== VS loss parameters =====
+gamma: 0.05
+tau: 0.75
+
+# ===== Logging =====
+log_dir: 'logs'
+model_dir: 'ckps'
+name: test
+
+# ===== SAM & optimization =====
+rho: 0.2
+rho_steps:
+  - 0.1
+  - 0.2
+min_rho: 0.05
+max_rho: 0.8
+rho_schedule: none         # none, linear, step
+SAM_type: H_SAM         # H_SAM, Focal-SAM, SAM, None
+sigma: 1.0
+lmbda: 0.6
+flat_gamma: 1.0
+sharpness: 0.5
+prec: fp32
+split_threshold: 3
+split: 1
+
+
+# ===== Learning rate schedule =====
+cos_lr: True
+end_lr_cos: 0.0
