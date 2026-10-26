@@ -1,6 +1,6 @@
 # ===== General settings =====
 dataset: cifar100
-data_path: ''
+data_path: '/workspace/4-SAM/SAM/data/'
 num_classes: 100
 arch: resnet32
 loss_type: LA              # LDAM, VS, LA, CE
@@ -20,7 +20,11 @@ resume: ''
 evaluate: False
 pretrained: False
 seed: 0
-gpu: 0
+gpu: 7
+
+# ===== VS loss parameters =====
+gamma: 0.05
+tau: 0.75
 
 # ===== Logging =====
 log_dir: 'logs'
@@ -42,8 +46,6 @@ sharpness: 0.5
 prec: fp32
 split_threshold: 3
 split: 1
-gamma: 0.05
-tau: 0.75
 
 
 # ===== Learning rate schedule =====

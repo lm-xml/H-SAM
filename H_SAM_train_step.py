@@ -35,7 +35,7 @@ def H_SAM_step(configs, epoch, model, criterion, inputs, targets, optimizer, cls
     grad_easy = torch.autograd.grad(loss_easy,
                                     model.parameters(),
                                     create_graph=False, retain_graph=True)
-    loss_hard = (loss_1 * mask_hard).sum() / mask_hard.sum()
+    loss_hard = (loss_1 * mask_hard).sum() / mask_hard.sum()   # 2
     loss_hard.mean().backward()
     optimizer.first_step(grad_easy)
 
@@ -44,52 +44,4 @@ def H_SAM_step(configs, epoch, model, criterion, inputs, targets, optimizer, cls
     loss.backward()
     optimizer.second_step()
 
-    return output, loss.mean()
-
-def focal_sam_step(args, model, criterion, inputs, targets, optimizer, cls_num_list, scaler=None):
-
-    output = model(inputs)
-    loss_ori = criterion(output, targets)
-    cls_num_list_tensor = torch.tensor(cls_num_list).cuda()
-    sum_cls_num_list = torch.sum(cls_num_list_tensor).cuda()
-    coefficients = (1 - cls_num_list_tensor / sum_cls_num_list) ** args.flat_gamma * args.sharpness
-    loss = 0.0
-    unique_targets = torch.unique(targets)
-    idx = torch.arange(targets.size(0)).unsqueeze(1)
-    mask = (targets.unsqueeze(1) == unique_targets.unsqueeze(0)).float()
-    loss += torch.sum((1 - coefficients[unique_targets]) * loss_ori[idx] * mask)
-    loss /= inputs.size(0)
-    loss.backward(retain_graph=True)
-    optimizer.first_step()
-
-    loss = 0.0
-    loss += torch.sum(coefficients[unique_targets] * loss_ori[idx] * mask)
-    loss /= inputs.size(0)
-    loss.backward()
-    optimizer.second_step()
-
-    output = model(inputs)
-    loss = criterion(output, targets)
-    loss_sam = 0.0
-    loss_sam += torch.sum(coefficients[unique_targets] * loss[idx] * mask)
-    loss_sam /= inputs.size(0)
-    loss_sam.backward()
-    optimizer.third_step()
-
-    return output, loss.mean()
-
-def SAM_step(model, criterion, inputs, targets, optimizer):
-    output = model(inputs)
-    loss = criterion(output, targets)
-    loss = loss.mean()
-
-    optimizer.zero_grad()
-    loss.backward()
-    optimizer.first_step(zero_grad=True)
-
-    output = model(inputs)
-    loss = criterion(output, targets)
-    loss = loss.mean()
-    loss.backward()
-    optimizer.second_step(zero_grad=True)
     return output, loss.mean()

@@ -3,13 +3,14 @@
 **Requirements**
 
 * Python 3.8
-* requirements.txt
+* torch 2.0.0
+* torchvision 0.15.0
 
 
 ## Dataset Preparation
-* [CIFAR-10 & CIFAR-100 & ImageNet-LT & iNaturalist 2018]
+* [CIFAR-10 & CIFAR-100 & ImageNet-LT]
 
-`The Long-tailed setting of imagenet and iNaturalist 2018` can be found in `config/dataset_txt/ImageNet-LT` and `config/dataset_txt/iNaturalist`.
+`The Long-tailed setting of imagenet` can be found in `config/dataset_txt/`.
 
 ## Training
 
@@ -22,7 +23,7 @@ python train_cifar.py
 
 ## Output
 ```
-H-SAM
+H-SAN
 ├── saved
 │   ├── modelname_date
 │   │   ├── ckps

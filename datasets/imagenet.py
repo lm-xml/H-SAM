@@ -1,3 +1,4 @@
+import torch
 import random
 import numpy as np
 import os, sys
@@ -34,9 +35,9 @@ class BalancedSampler(Sampler):
 
     def __len__(self):
         if self.retain_epoch_size:
-            return sum([len(bucket) for bucket in self.buckets])
+            return sum([len(bucket) for bucket in self.buckets]) # Actually we need to upscale to next full batch
         else:
-            return max([len(bucket) for bucket in self.buckets]) * self.bucket_num
+            return max([len(bucket) for bucket in self.buckets]) * self.bucket_num # Ensures every instance has the chance to be visited in an epoch
 
 class LT_Dataset(Dataset):
     
@@ -48,7 +49,7 @@ class LT_Dataset(Dataset):
             for line in f:
                 self.img_path.append(os.path.join(root, line.split()[0]))
                 self.labels.append(int(line.split()[1]))
-        self.targets = self.labels
+        self.targets = self.labels # Sampler needs to use targets
         
     def __len__(self):
         return len(self.labels)
@@ -140,7 +141,10 @@ class ImageNetLTDataLoader(DataLoader):
             'pin_memory': True
         }
 
-        super().__init__(dataset=self.dataset, **self.init_kwargs, sampler=sampler)
+        super().__init__(dataset=self.dataset, **self.init_kwargs, sampler=sampler) # Note that sampler does not apply to validation set
 
     def split_validation(self):
+        # If you do not want to validate:
+        #return None
+        # If you want to validate:
         return DataLoader(dataset=self.val_dataset, **self.val_init_kwargs)

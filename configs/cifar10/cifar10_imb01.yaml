@@ -20,7 +20,7 @@ resume: ''
 evaluate: False
 pretrained: False
 seed: 0
-gpu: 0
+gpu: 7
 
 # ===== VS loss parameters =====
 gamma: 0.05
@@ -40,7 +40,6 @@ min_rho: 0.05
 max_rho: 0.8
 rho_schedule: none         # none, linear, step
 SAM_type: H_SAM         # H_SAM, Focal-SAM, SAM, None
-sigma: 1.0
 lmbda: 0.6
 flat_gamma: 1.0
 sharpness: 0.5

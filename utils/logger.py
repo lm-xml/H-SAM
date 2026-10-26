@@ -45,7 +45,7 @@ _C.rho_steps = [0.1, 0.2]
 _C.min_rho = 0.05
 _C.max_rho = 0.8
 _C.rho_schedule = 'step'         # none, linear, step
-_C.SAM_type = 'H_SAM'         # H_SAM, Focal-SAM, SAM, None
+_C.SAM_type = 'H_SAM'         # Domain-SAM, Tail_SAM, Focal-SAM, SAM, None
 _C.lmbda = 0.6
 _C.flat_gamma = 1.0
 _C.sharpness = 0.5
@@ -64,6 +64,7 @@ def update_config(cfg, args):
     cfg.merge_from_file(args.cfg)
     cfg.merge_from_list(args.opts)
 
+    # cfg.freeze()
 
 def create_logger(cfg, cfg_name, file_name):
     time_str = time.strftime('%Y%m%d%H%M%S')
@@ -78,7 +79,7 @@ def create_logger(cfg, cfg_name, file_name):
         [cfg.dataset, cfg.arch, cfg.loss_type, cfg.train_rule, cfg.imb_type, str(cfg.imb_factor),
          cfg.SAM_type, cfg.rho_schedule, 'seed', str(cfg.seed), cfg.workers]
     )))
-    log_dir = Path("saved/") / '_'.join(name_list) / Path(cfg.log_dir)
+    log_dir = Path("saved/lamada=0.6_1/") / '_'.join(name_list) / Path(cfg.log_dir)
     print('=> creating {}'.format(log_dir))
     log_dir.mkdir(parents=True, exist_ok=True)
 
@@ -92,7 +93,8 @@ def create_logger(cfg, cfg_name, file_name):
     console = logging.StreamHandler()
     logging.getLogger('').addHandler(console)
 
-    model_dir = Path("saved/") / '_'.join(name_list) / Path(cfg.model_dir)
+    # model_dir =  Path("saved") / (cfg_name + '_' + time_str) / Path(cfg.model_dir)
+    model_dir = Path("saved/lamada=0.6_1/") / '_'.join(name_list) / Path(cfg.model_dir)
     print('=> creating {}'.format(model_dir))
     model_dir.mkdir(parents=True, exist_ok=True)
 

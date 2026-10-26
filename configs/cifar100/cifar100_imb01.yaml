@@ -20,7 +20,11 @@ resume: ''
 evaluate: False
 pretrained: False
 seed: 0
-gpu: 0
+gpu: 7
+
+# ===== VS loss parameters =====
+gamma: 0.05
+tau: 0.75
 
 # ===== Logging =====
 log_dir: 'logs'
@@ -42,8 +46,7 @@ sharpness: 0.5
 prec: fp32
 split_threshold: 3
 split: 1
-gamma: 0.05
-tau: 0.75
+
 
 # ===== Learning rate schedule =====
 cos_lr: True
